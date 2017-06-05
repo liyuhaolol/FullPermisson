@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +24,9 @@ public class PermissionActivity extends AppCompatActivity{
     private static final int PERMISSION_REQUEST = 1;
 
     private static final String PACKAGE_URL_SCHEME = "package:";
+
+
+    private AlertDialog.Builder builder;
 
 
 
@@ -56,22 +60,24 @@ public class PermissionActivity extends AppCompatActivity{
         boolean permissionFlag = true;//权限是否全部通过
         boolean dialogFlag = false;//是否显示设置dialog
         ArrayList<String> per = new ArrayList<>();//保存被拒绝的权限列表
+        initMissingPermissionDialog();
         switch (requestCode) {
             case PERMISSION_REQUEST:
                 for (int i = 0 ;i < grantResults.length; i++){
                     if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                         //存在被拒绝的权限
-                        per.add(permissions[i]);
+                        //per.add(permissions[i]);
                         permissionFlag = false;
                     }
                 }
                 break;
         }
-        List<String> names = selectGroup(per);//判断被拒绝的权限组名称
+        //List<String> names = selectGroup(per);//判断被拒绝的权限组名称
+
         if (permissionFlag) {
             doAfterPermission();//权限通过，执行对应方法
         }else{
-            if (per.size() > 0){//严谨判断大于0
+            /*if (per.size() > 0){//严谨判断大于0
                 for (String permission:per){
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(this,permission)){
                         //当前权限被设置了"不在询问",永远不会弹出进入这里，将dialog显示标志设为true
@@ -82,7 +88,7 @@ public class PermissionActivity extends AppCompatActivity{
                     //显示缺少权限，并解释为何需要这个权限
                     showMissingPermissionDialog(names);
                 }
-            }
+            }*/
         }
     }
 
@@ -92,21 +98,9 @@ public class PermissionActivity extends AppCompatActivity{
     public void doAfterPermission(){}
 
 
-    /**
-     * 显示解释设置dialog
-     * @param names 权限组名
-     */
-    private void showMissingPermissionDialog(List<String> names) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    private void initMissingPermissionDialog(){
+        builder = new AlertDialog.Builder(this);
         builder.setTitle("帮助");
-        String content = "";
-        //将权限组名字转换为字符串
-        if (names.size() > 0){
-            for (String name:names){
-                content = content+name+"\n";
-            }
-        }
-        builder.setMessage("当前应用缺少必要权限:\n"+content+"请点击\"设置\"-\"权限\"-打开所需权限。");
 
         // 拒绝, 退出应用
         builder.setNegativeButton("取消", null);
@@ -118,7 +112,28 @@ public class PermissionActivity extends AppCompatActivity{
             }
         });
 
-        builder.show();
+    }
+
+    /**
+     * 显示解释设置dialog
+     * @param names 权限组名
+     */
+    private void showMissingPermissionDialog(List<String> names) {
+        String content = "";
+        //将权限组名字转换为字符串
+        if (names.size() > 0){
+            for (String name:names){
+                content = content+name+"\n";
+            }
+        }
+        builder.setMessage("当前应用缺少必要权限:\n"+content+"请点击\"设置\"-\"权限\"-打开所需权限。");
+        Handler handler = new Handler(getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                builder.show();
+            }
+        },5000);
     }
 
     /**

@@ -17,7 +17,7 @@ public class MainActivity extends PermissionActivity {
         switch (v.getId()){
             case R.id.btn1:
                 my = 1;
-                if (hasPermission(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)){
+                if (hasPermission(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                     doAfterPermission();
                 }
                 break;
