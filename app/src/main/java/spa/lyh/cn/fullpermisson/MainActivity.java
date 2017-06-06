@@ -17,13 +17,13 @@ public class MainActivity extends PermissionActivity {
         switch (v.getId()){
             case R.id.btn1:
                 my = 1;
-                if (hasPermission(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                if (hasPermission(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)){
                     doAfterPermission();
                 }
                 break;
             case R.id.btn2:
                 my = 2;
-                if (hasPermission(Manifest.permission.CAMERA)){
+                if (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                     doAfterPermission();
                 }
                 break;

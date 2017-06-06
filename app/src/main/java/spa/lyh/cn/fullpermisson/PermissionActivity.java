@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -37,13 +36,19 @@ public class PermissionActivity extends AppCompatActivity{
      * @return 是否有权限，一般调用不判断返回否的操作
      */
     public boolean hasPermission(String...permissions){
+        List<String> realMissPermission = new ArrayList<>();
+        boolean flag = true;
         for (String permission:permissions){
             if (ContextCompat.checkSelfPermission(this,permission)!= PackageManager.PERMISSION_GRANTED){
-                requestPermission(PERMISSION_REQUEST, permissions);
-                return false;
+                realMissPermission.add(permission);
+                flag = false;
             }
         }
-        return true;
+        if (realMissPermission.size() > 0){
+            String[] missPermissions = realMissPermission.toArray(new String[realMissPermission.size()]);
+            requestPermission(PERMISSION_REQUEST, missPermissions);
+        }
+        return flag;
     }
 
     /**
@@ -66,18 +71,18 @@ public class PermissionActivity extends AppCompatActivity{
                 for (int i = 0 ;i < grantResults.length; i++){
                     if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                         //存在被拒绝的权限
-                        //per.add(permissions[i]);
+                        per.add(permissions[i]);
                         permissionFlag = false;
                     }
                 }
                 break;
         }
-        //List<String> names = selectGroup(per);//判断被拒绝的权限组名称
+        List<String> names = selectGroup(per);//判断被拒绝的权限组名称
 
         if (permissionFlag) {
             doAfterPermission();//权限通过，执行对应方法
         }else{
-            /*if (per.size() > 0){//严谨判断大于0
+            if (per.size() > 0){//严谨判断大于0
                 for (String permission:per){
                     if (!ActivityCompat.shouldShowRequestPermissionRationale(this,permission)){
                         //当前权限被设置了"不在询问",永远不会弹出进入这里，将dialog显示标志设为true
@@ -88,7 +93,7 @@ public class PermissionActivity extends AppCompatActivity{
                     //显示缺少权限，并解释为何需要这个权限
                     showMissingPermissionDialog(names);
                 }
-            }*/
+            }
         }
     }
 
@@ -127,13 +132,7 @@ public class PermissionActivity extends AppCompatActivity{
             }
         }
         builder.setMessage("当前应用缺少必要权限:\n"+content+"请点击\"设置\"-\"权限\"-打开所需权限。");
-        Handler handler = new Handler(getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                builder.show();
-            }
-        },5000);
+        builder.show();
     }
 
     /**
