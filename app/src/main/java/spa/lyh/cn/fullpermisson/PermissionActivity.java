@@ -72,7 +72,7 @@ public class PermissionActivity extends AppCompatActivity {
      * @param code        请求码
      * @param permissions 权限列表
      */
-    public void requestPermission(int code, String... permissions) {
+    private void requestPermission(int code, String... permissions) {
         ActivityCompat.requestPermissions(this, permissions, code);
     }
 
