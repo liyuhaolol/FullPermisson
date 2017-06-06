@@ -23,6 +23,8 @@ import java.util.List;
  *
  *不同权限需求种类，不要在同一个权限组里发起申请，因为code你一次只能传1种，4种需求种类对应4种应用场景，所以
  * 不要尝试使用一套逻辑来同时兼容4种模式，应该是不现实的。
+ *
+ *不要去判断hasPermission()为false的情况，因为会自动申请权限，false的返回是没有意义的
  */
 
 public class PermissionActivity extends AppCompatActivity {
