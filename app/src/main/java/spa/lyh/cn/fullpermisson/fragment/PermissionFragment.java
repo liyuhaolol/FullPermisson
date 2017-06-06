@@ -1,6 +1,7 @@
-package spa.lyh.cn.fullpermisson;
+package spa.lyh.cn.fullpermisson.fragment;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,7 +10,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -17,17 +17,11 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * Created by liyuhao on 2017/6/5.
- * 使用事项，权限是按照权限组来授权的，所以申请权限时，尽量不要同时申请同一权限组的权限，比如
- * WRITE_EXTERNAL_STORAGE和READ_EXTERNAL_STORAGE，只要申请其中一个权限，整个group.STORAGE都会被赋予权限
- *
- *不同权限需求种类，不要在同一个权限组里发起申请，因为code你一次只能传1种，4种需求种类对应4种应用场景，所以
- * 不要尝试使用一套逻辑来同时兼容4种模式，应该是不现实的。
- *
- *不要去判断hasPermission()为false的情况，因为会自动申请权限，false的返回是没有意义的
+ * Created by liyuhao on 2017/6/6.
+ * Fragment完全与Activity一样
  */
 
-public class PermissionActivity extends AppCompatActivity {
+public class PermissionFragment extends Fragment{
     //必须被允许，且自动执行授权后方法
     public static final int REQUIRED_LOAD_METHOD = 1;
     //必须被允许，只进行申请权限，不自动执行授权后方法
@@ -42,7 +36,6 @@ public class PermissionActivity extends AppCompatActivity {
     //被永久拒绝之后显示的dialog
     private AlertDialog.Builder builder;
 
-
     /**
      * 判断是否拥有权限
      * 有权限返回true，没有权限返回false并自动申请权限
@@ -54,7 +47,7 @@ public class PermissionActivity extends AppCompatActivity {
         List<String> realMissPermission = new ArrayList<>();
         boolean flag = true;
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
                 realMissPermission.add(permission);
                 flag = false;
             }
@@ -73,8 +66,9 @@ public class PermissionActivity extends AppCompatActivity {
      * @param permissions 权限列表
      */
     private void requestPermission(int code, String... permissions) {
-        ActivityCompat.requestPermissions(this, permissions, code);
+        ActivityCompat.requestPermissions(getActivity(), permissions, code);
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -120,7 +114,7 @@ public class PermissionActivity extends AppCompatActivity {
             if (requiredFlag) {
                 if (per.size() > 0) {//严谨判断大于0
                     for (String permission : per) {
-                        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                        if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permission)) {
                             //当前权限被设置了"不在询问",永远不会弹出进入这里，将dialog显示标志设为true
                             dialogFlag = true;
                         }
@@ -151,7 +145,7 @@ public class PermissionActivity extends AppCompatActivity {
 
 
     private void initMissingPermissionDialog() {
-        builder = new AlertDialog.Builder(this);
+        builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("帮助");
 
         // 拒绝, 退出应用
@@ -189,7 +183,7 @@ public class PermissionActivity extends AppCompatActivity {
      */
     private void startAppSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse(PACKAGE_URL_SCHEME + getPackageName()));
+        intent.setData(Uri.parse(PACKAGE_URL_SCHEME + getActivity().getPackageName()));
         startActivity(intent);
     }
 
@@ -242,4 +236,7 @@ public class PermissionActivity extends AppCompatActivity {
         group = new ArrayList<>(new HashSet<>(group));
         return group;
     }
+
+
+
 }

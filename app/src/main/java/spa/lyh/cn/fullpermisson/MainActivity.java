@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import spa.lyh.cn.fullpermisson.activity.PermissionActivity;
+
 
 public class MainActivity extends PermissionActivity {
     int my;
