@@ -30,7 +30,9 @@ public class MainActivity extends PermissionActivity {
             case R.id.btn3:
                 //不必要，执行方法
                 my = 2;
-                hasPermission(NOT_REQUIRED_LOAD_METHOD,Manifest.permission.RECORD_AUDIO);
+                if (hasPermission(NOT_REQUIRED_LOAD_METHOD,Manifest.permission.RECORD_AUDIO)){
+                    doAfterPermission();
+            }
                 break;
             case R.id.btn4:
                 //不必要，不执行方法
