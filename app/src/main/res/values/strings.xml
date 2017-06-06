@@ -1,3 +1,27 @@
 <resources>
-    <string name="app_name">FullPermisson</string>
+    <string name="test">用作记录所有危险权限，与项目无关</string>
+    <string name="android.permission.CAMERA">相机</string>
+    <string name="android.permission.READ_CALENDAR">日历</string>
+    <string name="android.permission.WRITE_CALENDAR">日历</string>
+    <string name="android.permission.READ_CONTACTS">联系人</string>
+    <string name="android.permission.WRITE_CONTACTS">联系人</string>
+    <string name="android.permission.GET_ACCOUNTS">联系人</string>
+    <string name="android.permission.ACCESS_FINE_LOCATION">定位</string>
+    <string name="android.permission.ACCESS_COARSE_LOCATION">定位</string>
+    <string name="android.permission.RECORD_AUDIO">录音</string>
+    <string name="android.permission.READ_PHONE_STATE">手机状态</string>
+    <string name="android.permission.CALL_PHONE">手机状态</string>
+    <string name="android.permission.READ_CALL_LOG">手机状态</string>
+    <string name="android.permission.WRITE_CALL_LOG">手机状态</string>
+    <string name="android.permission.ADD_VOICEMAIL">手机状态</string>
+    <string name="android.permission.USE_SIP">手机状态</string>
+    <string name="android.permission.PROCESS_OUTGOING_CALLS">手机状态</string>
+    <string name="android.permission.BODY_SENSORS">传感器</string>
+    <string name="android.permission.SEND_SMS">短信</string>
+    <string name="android.permission.RECEIVE_SMS">短信</string>
+    <string name="android.permission.READ_SMS">短信</string>
+    <string name="android.permission.RECEIVE_WAP_PUSH">短信</string>
+    <string name="android.permission.RECEIVE_MMS">短信</string>
+    <string name="android.permission.READ_EXTERNAL_STORAGE">存储读写</string>
+    <string name="android.permission.WRITE_EXTERNAL_STORAGE">存储读写</string>
 </resources>
