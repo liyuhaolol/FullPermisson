@@ -21,7 +21,7 @@ public class MainActivity extends PermissionActivity {
             case R.id.btn1:
                 //必要，执行方法
                 my = 1;
-                if (hasPermission(REQUIRED_LOAD_METHOD,Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (hasPermission(REQUIRED_LOAD_METHOD,Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     doAfterPermission();
                 }
                 break;

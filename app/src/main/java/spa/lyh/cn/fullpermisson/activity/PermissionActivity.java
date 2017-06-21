@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -41,6 +42,37 @@ public class PermissionActivity extends AppCompatActivity {
 
     //被永久拒绝之后显示的dialog
     private AlertDialog.Builder builder;
+
+    private static HashMap<String,String> permissionList;
+
+    static {
+        permissionList = new HashMap<>();
+        permissionList.put("android.permission.READ_CALENDAR","日历");
+        permissionList.put("android.permission.WRITE_CALENDAR","日历");
+        permissionList.put("android.permission.CAMERA","相机");
+        permissionList.put("android.permission.READ_CONTACTS","联系人");
+        permissionList.put("android.permission.WRITE_CONTACTS","联系人");
+        permissionList.put("android.permission.GET_ACCOUNTS","联系人");
+        permissionList.put("android.permission.ACCESS_FINE_LOCATION","定位");
+        permissionList.put("android.permission.ACCESS_COARSE_LOCATION","定位");
+        permissionList.put("android.permission.RECORD_AUDIO","录音");
+        permissionList.put("android.permission.READ_PHONE_STATE","手机状态");
+        permissionList.put("android.permission.CALL_PHONE","手机状态");
+        permissionList.put("android.permission.READ_CALL_LOG","手机状态");
+        permissionList.put("android.permission.WRITE_CALL_LOG","手机状态");
+        permissionList.put("android.permission.ADD_VOICEMAIL","手机状态");
+        permissionList.put("android.permission.USE_SIP","手机状态");
+        permissionList.put("android.permission.PROCESS_OUTGOING_CALLS","手机状态");
+        permissionList.put("android.permission.BODY_SENSORS","传感器");
+        permissionList.put("android.permission.SEND_SMS","短信");
+        permissionList.put("android.permission.RECEIVE_SMS","短信");
+        permissionList.put("android.permission.READ_SMS","短信");
+        permissionList.put("android.permission.RECEIVE_WAP_PUSH","短信");
+        permissionList.put("android.permission.RECEIVE_MMS","短信");
+        permissionList.put("android.permission.READ_EXTERNAL_STORAGE","存储读写");
+        permissionList.put("android.permission.WRITE_EXTERNAL_STORAGE","存储读写");
+
+    }
 
 
     /**
@@ -113,6 +145,7 @@ public class PermissionActivity extends AppCompatActivity {
         List<String> names = selectGroup(per);//判断被拒绝的权限组名称
 
         if (permissionFlag) {
+            //通过了申请的权限
             if (loadMethodFlag){
                 doAfterPermission();//权限通过，执行对应方法
             }
@@ -202,7 +235,7 @@ public class PermissionActivity extends AppCompatActivity {
     private List<String> selectGroup(List<String> permissions) {
         List<String> group = new ArrayList<>();
         //匹配权限表
-        for (String permission : permissions) {
+        /*for (String permission : permissions) {
             if (permission.equals(Manifest.permission.READ_CALENDAR) ||
                     permission.equals(Manifest.permission.WRITE_CALENDAR)) {
                 group.add("日历");
@@ -237,7 +270,13 @@ public class PermissionActivity extends AppCompatActivity {
                     permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 group.add("存储读写");
             }
+        }*/
+        for (String permission : permissions) {
+            group.add(permissionList.get(permission));
         }
+
+
+
         //去重
         group = new ArrayList<>(new HashSet<>(group));
         return group;
