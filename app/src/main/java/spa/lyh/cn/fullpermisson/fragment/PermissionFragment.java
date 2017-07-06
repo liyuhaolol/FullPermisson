@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -35,6 +36,37 @@ public class PermissionFragment extends Fragment{
 
     //被永久拒绝之后显示的dialog
     private AlertDialog.Builder builder;
+
+    private static HashMap<String,String> permissionList;
+
+    static {
+        permissionList = new HashMap<>();
+        permissionList.put("android.permission.READ_CALENDAR","日历");
+        permissionList.put("android.permission.WRITE_CALENDAR","日历");
+        permissionList.put("android.permission.CAMERA","相机");
+        permissionList.put("android.permission.READ_CONTACTS","联系人");
+        permissionList.put("android.permission.WRITE_CONTACTS","联系人");
+        permissionList.put("android.permission.GET_ACCOUNTS","联系人");
+        permissionList.put("android.permission.ACCESS_FINE_LOCATION","定位");
+        permissionList.put("android.permission.ACCESS_COARSE_LOCATION","定位");
+        permissionList.put("android.permission.RECORD_AUDIO","录音");
+        permissionList.put("android.permission.READ_PHONE_STATE","手机状态");
+        permissionList.put("android.permission.CALL_PHONE","手机状态");
+        permissionList.put("android.permission.READ_CALL_LOG","手机状态");
+        permissionList.put("android.permission.WRITE_CALL_LOG","手机状态");
+        permissionList.put("android.permission.ADD_VOICEMAIL","手机状态");
+        permissionList.put("android.permission.USE_SIP","手机状态");
+        permissionList.put("android.permission.PROCESS_OUTGOING_CALLS","手机状态");
+        permissionList.put("android.permission.BODY_SENSORS","传感器");
+        permissionList.put("android.permission.SEND_SMS","短信");
+        permissionList.put("android.permission.RECEIVE_SMS","短信");
+        permissionList.put("android.permission.READ_SMS","短信");
+        permissionList.put("android.permission.RECEIVE_WAP_PUSH","短信");
+        permissionList.put("android.permission.RECEIVE_MMS","短信");
+        permissionList.put("android.permission.READ_EXTERNAL_STORAGE","存储读写");
+        permissionList.put("android.permission.WRITE_EXTERNAL_STORAGE","存储读写");
+
+    }
 
     /**
      * 判断是否拥有权限
@@ -197,40 +229,7 @@ public class PermissionFragment extends Fragment{
         List<String> group = new ArrayList<>();
         //匹配权限表
         for (String permission : permissions) {
-            if (permission.equals(Manifest.permission.READ_CALENDAR) ||
-                    permission.equals(Manifest.permission.WRITE_CALENDAR)) {
-                group.add("日历");
-            } else if (permission.equals(Manifest.permission.CAMERA)) {
-                group.add("相机");
-            } else if (permission.equals(Manifest.permission.READ_CONTACTS) ||
-                    permission.equals(Manifest.permission.WRITE_CONTACTS) ||
-                    permission.equals(Manifest.permission.GET_ACCOUNTS)) {
-                group.add("联系人");
-            } else if (permission.equals(Manifest.permission.ACCESS_FINE_LOCATION) ||
-                    permission.equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                group.add("定位");
-            } else if (permission.equals(Manifest.permission.RECORD_AUDIO)) {
-                group.add("录音");
-            } else if (permission.equals(Manifest.permission.READ_PHONE_STATE) ||
-                    permission.equals(Manifest.permission.CALL_PHONE) ||
-                    permission.equals(Manifest.permission.READ_CALL_LOG) ||
-                    permission.equals(Manifest.permission.WRITE_CALL_LOG) ||
-                    permission.equals(Manifest.permission.ADD_VOICEMAIL) ||
-                    permission.equals(Manifest.permission.USE_SIP) ||
-                    permission.equals(Manifest.permission.PROCESS_OUTGOING_CALLS)) {
-                group.add("手机状态");
-            } else if (permission.equals(Manifest.permission.BODY_SENSORS)) {
-                group.add("传感器");
-            } else if (permission.equals(Manifest.permission.SEND_SMS) ||
-                    permission.equals(Manifest.permission.RECEIVE_SMS) ||
-                    permission.equals(Manifest.permission.READ_SMS) ||
-                    permission.equals(Manifest.permission.RECEIVE_WAP_PUSH) ||
-                    permission.equals(Manifest.permission.RECEIVE_MMS)) {
-                group.add("短信");
-            } else if (permission.equals(Manifest.permission.READ_EXTERNAL_STORAGE) ||
-                    permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                group.add("存储读写");
-            }
+            group.add(permissionList.get(permission));
         }
         //去重
         group = new ArrayList<>(new HashSet<>(group));
