@@ -229,7 +229,9 @@ public class PermissionFragment extends Fragment{
         List<String> group = new ArrayList<>();
         //匹配权限表
         for (String permission : permissions) {
-            group.add(permissionList.get(permission));
+            if (permissionList != null){
+                group.add(permissionList.get(permission));
+            }
         }
         //去重
         group = new ArrayList<>(new HashSet<>(group));

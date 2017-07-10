@@ -272,7 +272,9 @@ public class PermissionActivity extends AppCompatActivity {
             }
         }*/
         for (String permission : permissions) {
-            group.add(permissionList.get(permission));
+            if (permissionList != null){
+                group.add(permissionList.get(permission));
+            }
         }
 
 
