@@ -135,7 +135,6 @@ public class PermissionActivity extends AppCompatActivity {
             case NOT_REQUIRED_LOAD_METHOD:
                 loadMethodFlag = true;
                 requiredFlag = false;
-                permissionFlag = true;
                 break;
             case NOT_REQUIRED_ONLY_REQUEST:
                 loadMethodFlag = false;
@@ -161,11 +160,17 @@ public class PermissionActivity extends AppCompatActivity {
                     if (dialogFlag) {
                         //显示缺少权限，并解释为何需要这个权限
                         showMissingPermissionDialog(names);
+                    }else {
+                        if (loadMethodFlag){
+                            rejectAfterPermission();
+                        }
                     }
                 }
             }else {
                 Log.e("Permission:","Permission had been rejected");
-                rejectAfterPermission();
+                if (loadMethodFlag){
+                    rejectAfterPermission();
+                }
             }
         }
     }
@@ -188,7 +193,12 @@ public class PermissionActivity extends AppCompatActivity {
         builder.setTitle("帮助");
 
         // 拒绝, 退出应用
-        builder.setNegativeButton("取消", null);
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                rejectAfterPermission();
+            }
+        });
 
         builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
             @Override

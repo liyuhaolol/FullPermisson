@@ -27,18 +27,19 @@ public class MainActivity extends PermissionActivity {
                 break;
             case R.id.btn2:
                 //必要，不执行方法
+                my = 2;
                 hasPermission(REQUIRED_ONLY_REQUEST,Manifest.permission.ACCESS_FINE_LOCATION);
                 break;
             case R.id.btn3:
                 //不必要，执行方法
-                my = 2;
+                my = 3;
                 if (hasPermission(NOT_REQUIRED_LOAD_METHOD,Manifest.permission.RECORD_AUDIO)){
                     doAfterPermission();
             }
                 break;
             case R.id.btn4:
                 //不必要，不执行方法
-                my = 2;
+                my = 4;
                 hasPermission(NOT_REQUIRED_ONLY_REQUEST,Manifest.permission.READ_CALENDAR);
                 break;
         }
@@ -51,8 +52,14 @@ public class MainActivity extends PermissionActivity {
             case 1:
                 Toast.makeText(this,"必要，执行方法",Toast.LENGTH_SHORT).show();
                 break;
-            case 2:
+            case 2://理论上不会执行
+                Toast.makeText(this,"必要，不执行方法",Toast.LENGTH_SHORT).show();
+                break;
+            case 3:
                 Toast.makeText(this,"不必要，执行方法",Toast.LENGTH_SHORT).show();
+                break;
+            case 4://理论上不会执行
+                Toast.makeText(this,"不必要，不执行方法",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -64,9 +71,16 @@ public class MainActivity extends PermissionActivity {
     public void rejectAfterPermission() {
         switch (my){
             case 1:
+                Toast.makeText(this,"必要，执行方法拒绝了相应的权限",Toast.LENGTH_SHORT).show();
                 break;
-            case 2:
-                Toast.makeText(this,"拒绝了相应的权限",Toast.LENGTH_SHORT).show();
+            case 2://理论上不会执行
+                Toast.makeText(this,"必要，不执行方法拒绝了相应的权限",Toast.LENGTH_SHORT).show();
+                break;
+            case 3:
+                Toast.makeText(this,"不必要，执行方法拒绝了相应的权限",Toast.LENGTH_SHORT).show();
+                break;
+            case 4://理论上不会执行
+                Toast.makeText(this,"不必要，不执行方法拒绝了相应的权限",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
