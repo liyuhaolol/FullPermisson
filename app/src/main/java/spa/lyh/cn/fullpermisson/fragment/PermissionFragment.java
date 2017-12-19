@@ -37,6 +37,8 @@ public class PermissionFragment extends Fragment{
     //被永久拒绝之后显示的dialog
     private AlertDialog.Builder builder;
 
+    private boolean loadMethodFlag;//是否自动加载方法
+
     private static HashMap<String,String> permissionList;
 
     static {
@@ -107,7 +109,6 @@ public class PermissionFragment extends Fragment{
         boolean permissionFlag = true;//权限是否全部通过
         boolean dialogFlag = false;//是否显示设置dialog
         boolean requiredFlag = false;//是否为项目必须的权限
-        boolean loadMethodFlag = false;//是否自动加载方法
         ArrayList<String> per = new ArrayList<>();//保存被拒绝的权限列表
         initMissingPermissionDialog();
         for (int i = 0; i < grantResults.length; i++) {
@@ -129,7 +130,6 @@ public class PermissionFragment extends Fragment{
             case NOT_REQUIRED_LOAD_METHOD:
                 loadMethodFlag = true;
                 requiredFlag = false;
-                permissionFlag = true;
                 break;
             case NOT_REQUIRED_ONLY_REQUEST:
                 loadMethodFlag = false;
@@ -139,6 +139,7 @@ public class PermissionFragment extends Fragment{
         List<String> names = selectGroup(per);//判断被拒绝的权限组名称
 
         if (permissionFlag) {
+            //通过了申请的权限
             if (loadMethodFlag){
                 doAfterPermission();//权限通过，执行对应方法
             }
@@ -154,11 +155,17 @@ public class PermissionFragment extends Fragment{
                     if (dialogFlag) {
                         //显示缺少权限，并解释为何需要这个权限
                         showMissingPermissionDialog(names);
+                    }else {
+                        if (loadMethodFlag){
+                            rejectAfterPermission();
+                        }
                     }
                 }
             }else {
                 Log.e("Permission:","Permission had been rejected");
-                rejectAfterPermission();
+                if (loadMethodFlag){
+                    rejectAfterPermission();
+                }
             }
         }
     }
@@ -181,7 +188,24 @@ public class PermissionFragment extends Fragment{
         builder.setTitle("帮助");
 
         // 拒绝, 退出应用
-        builder.setNegativeButton("取消", null);
+        // 拒绝, 退出应用
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (loadMethodFlag){
+                    rejectAfterPermission();
+                }
+            }
+        });
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (loadMethodFlag){
+                    rejectAfterPermission();
+                }
+            }
+        });
 
         builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
             @Override

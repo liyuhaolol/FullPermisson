@@ -1,6 +1,5 @@
 package spa.lyh.cn.fullpermisson.activity;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,6 +41,8 @@ public class PermissionActivity extends AppCompatActivity {
 
     //被永久拒绝之后显示的dialog
     private AlertDialog.Builder builder;
+
+    private boolean loadMethodFlag;//是否自动加载方法
 
     private static HashMap<String,String> permissionList;
 
@@ -113,7 +114,6 @@ public class PermissionActivity extends AppCompatActivity {
         boolean permissionFlag = true;//权限是否全部通过
         boolean dialogFlag = false;//是否显示设置dialog
         boolean requiredFlag = false;//是否为项目必须的权限
-        boolean loadMethodFlag = false;//是否自动加载方法
         ArrayList<String> per = new ArrayList<>();//保存被拒绝的权限列表
         initMissingPermissionDialog();
         for (int i = 0; i < grantResults.length; i++) {
@@ -196,7 +196,18 @@ public class PermissionActivity extends AppCompatActivity {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                rejectAfterPermission();
+                if (loadMethodFlag){
+                    rejectAfterPermission();
+                }
+            }
+        });
+
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (loadMethodFlag){
+                    rejectAfterPermission();
+                }
             }
         });
 
